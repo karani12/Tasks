@@ -1,6 +1,6 @@
 // services/notificationService.js
 const nodemailer = require("nodemailer");
-const { Queue } = require("../models/QueueModel");
+const  Queue  = require("../models/QueueModel");
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -27,11 +27,18 @@ const sendEmailNotification = async (to, subject, text) => {
 
 const processEmailQueue = async () => {
   try {
-    const queueItems = await Queue.findAll({ where: { status: "pending" } });
+    console.log("hey")
+
+    const queueItems = await Queue.findAll({
+        where: {
+            status: "pending"
+        }
+    })
+    console.log(queueItems)
     for (const item of queueItems) {
       await sendEmailNotification(item.to, item.subject, item.text);
-      item.status = "completed";
-      await item.save();
+    //   item.status = "completed";
+    //   await item.save();
     }
   } catch (error) {
     console.error("Error processing email queue:", error);
