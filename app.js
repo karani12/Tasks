@@ -1,7 +1,7 @@
-// app.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/AuthRoutes');
+const taskRoutes = require('./routes/TaskRoutes');
 const sequelize = require('./config/db');
 require('dotenv').config();
 
@@ -9,6 +9,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use('/api/auth', authRoutes);
+app.use('/api', taskRoutes);
 
 const PORT = process.env.PORT || 3000;
 
