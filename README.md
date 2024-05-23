@@ -10,6 +10,7 @@ The Task Management System is a web application built with Node.js, Express, Seq
 - **Database Storage:** Data is stored in a SQLite database, ensuring reliability and scalability.
 - **Data Validation:** Input data is validated using express-validator to ensure data integrity and security.
 - **Rate Limiting:** Middleware is implemented to prevent abuse through rate limiting.
+- **Email queuing:** Emails are queued using database as simple queue driver.
 
 ## Installation
 
