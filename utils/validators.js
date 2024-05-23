@@ -13,7 +13,15 @@ const loginValidation = [
   check('password', 'Password is required').not().isEmpty(),
 ];
 
+const taskValidation = [
+  check('title', 'Title is required').not().isEmpty(),
+  check('description', 'Description is required').not().isEmpty(),
+  check('dueDate', 'Valid due date is required').isISO8601(),
+  check('priority', 'Priority must be one of: low, medium, high').isIn(['low', 'medium', 'high']),
+];
+
 module.exports = {
   registerValidation,
   loginValidation,
+  taskValidation,
 };
