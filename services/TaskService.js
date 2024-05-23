@@ -1,9 +1,19 @@
 const Task = require('../models/TaskModel');
 const User = require('../models/UserModel');
+const Queue = require('../models/QueueModel');
 
 const createTask = async (taskData) => {
   const task = await Task.create(taskData);
-  // Notify assigned user (to be implemented)
+  const sendTo = await User.findByPk(task.assignedUserId);
+  const queueItem = await Queue.create({
+    to: sendTo.email,
+    subject: 'Task Assigned',
+    text: `You have been assigned a new task: ${task.title} and tracking number ${task.id} , check your dashboard for more details.`,
+
+  })
+  // log the queued item
+  console.log(queueItem);
+
   return task;
 };
 
