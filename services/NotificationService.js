@@ -37,8 +37,8 @@ const processEmailQueue = async () => {
     console.log(queueItems)
     for (const item of queueItems) {
       await sendEmailNotification(item.to, item.subject, item.text);
-    //   item.status = "completed";
-    //   await item.save();
+      item.status = "completed";
+      await item.save();
     }
   } catch (error) {
     console.error("Error processing email queue:", error);
