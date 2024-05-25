@@ -24,7 +24,14 @@ const register = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     const user = await User.findOne({ where: { id: req.user.id } });
-    res.json(user);
+    // don't return password
+    res.json({
+      username: user.username,
+      email: user.email,
+      role: user.role
+    })
+
+   
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
