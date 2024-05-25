@@ -55,7 +55,7 @@ const login = async (req, res) => {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    const accessToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    const accessToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
     res.json({ accessToken, user: { id: user.id, username: user.username, email: user.email, role: user.role } });
    
   } catch (error) {
@@ -64,13 +64,29 @@ const login = async (req, res) => {
 };
 
 const logout = (req, res) => {
-  // In a stateless JWT, logout can be handled client-side by deleting the token
   res.json({ message: 'Logout successful' });
 };
+
+// get all users if user is admin
+const getAllUsers = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+    if (user.role !== 'admin') {
+      return res.status(403).json({ error: 'Unauthorized' });
+    }
+    const users = await User.findAll({ attributes: ['id', 'username'] });
+    res.json(users);
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 module.exports = {
   register,
   login,
   logout,
-  getUser
+  getUser,
+  getAllUsers
 };
