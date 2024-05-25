@@ -1,6 +1,7 @@
 const taskService = require('../services/TaskService');
 const { validationResult } = require('express-validator');
 const { taskValidation } = require('../utils/validators');
+const User = require('../models/UserModel');
 
 const createTask = async (req, res) => {
   const errors = validationResult(req);
@@ -19,11 +20,24 @@ const createTask = async (req, res) => {
 
 const getTasks = async (req, res) => {
   try {
-    if (req.user.role === 'admin') {
-      const tasks = await taskService.getAllTasks();
-      return res.status(200).json(tasks);
-    }
+   
     const tasks = await taskService.getTasksByUser(req.user.id);
+    res.status(200).json(tasks);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getAllTasks = async (req, res) => {
+  try {
+    // get user
+    const user = await User.findByPk(req.user.id);
+    if (user.role !== 'admin') {
+      return res.status(403).json({ error: 'Unauthorized' });
+    }
+
+   
+    const tasks = await taskService.getAllTasks();
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -43,5 +57,6 @@ const updateTaskStatus = async (req, res) => {
 module.exports = {
   createTask,
   getTasks,
+  getAllTasks,
   updateTaskStatus,
 };
