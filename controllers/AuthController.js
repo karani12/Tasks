@@ -20,6 +20,16 @@ const register = async (req, res) => {
   }
 };
 
+// get user
+const getUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ where: { id: req.user.id } });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 const login = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -55,4 +65,5 @@ module.exports = {
   register,
   login,
   logout,
+  getUser
 };

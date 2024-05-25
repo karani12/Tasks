@@ -19,6 +19,10 @@ const createTask = async (req, res) => {
 
 const getTasks = async (req, res) => {
   try {
+    if (req.user.role === 'admin') {
+      const tasks = await taskService.getAllTasks();
+      return res.status(200).json(tasks);
+    }
     const tasks = await taskService.getTasksByUser(req.user.id);
     res.status(200).json(tasks);
   } catch (error) {

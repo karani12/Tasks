@@ -20,6 +20,10 @@ const createTask = async (taskData) => {
 const getTasksByUser = async (userId) => {
   return await Task.findAll({ where: { assignedUserId: userId } });
 };
+// get all tasks
+const getAllTasks = async () => {
+  return await Task.findAll();
+};
 
 const getTaskById = async (taskId) => {
   return await Task.findByPk(taskId);
@@ -51,5 +55,6 @@ module.exports = {
   createTask,
   getTasksByUser,
   getTaskById,
+  getAllTasks,
   updateTaskStatus,
 };
