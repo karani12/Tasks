@@ -16,7 +16,7 @@ The system will send an email notification to the user once they are assigned a 
 
 The database has been seeded with several users and tasks. The admin credentials are:
 ```
-email: Jadon_Dickens
+email: Murphy.Funk38
 password: password
 ```
 
