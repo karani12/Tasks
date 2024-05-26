@@ -21,7 +21,7 @@ password: password
 ```
 
 ### improvements
-With enough time, I would have implemented the following:
+With enough reources and time, the following improvements can be made to the system:
 
 - **`Pagination`** for the tasks and users
 - **`Search`** for the tasks and users
