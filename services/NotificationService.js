@@ -28,17 +28,25 @@ const sendEmailNotification = async (to, subject, text, id) => {
 
 const processEmailQueue = async () => {
   try {
-    console.log("hey");
 
     const queueItems = await Queue.findAll({
       where: {
         status: "pending",
       },
     });
-    console.log(queueItems);
-    for (const item of queueItems) {
-      await sendEmailNotification(item.to, item.subject, item.text, item.id);
+    if (queueItems.length === 0) {
+      console.log("No pending emails")
+      return;
+    }else{
+
+      for (const item of queueItems) {
+        console.log("Sending email notification to:", item.to);
+        item.status = "completed";
+        item.save()
+        // await sendEmailNotification(item.to, item.subject, item.text, item.id);
+      }
     }
+
   } catch (error) {
     console.error("Error processing email queue:", error);
   }
