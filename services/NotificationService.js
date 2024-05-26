@@ -1,6 +1,6 @@
 // services/notificationService.js
 const nodemailer = require("nodemailer");
-const  Queue  = require("../models/QueueModel");
+const Queue = require("../models/QueueModel");
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -11,15 +11,16 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendEmailNotification = async (to, subject, text) => {
+const sendEmailNotification = async (to, subject, text, id) => {
   try {
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: "mailtrap@tajitest.xyz",
       to,
       subject,
       text,
     });
-    console.log("Email notification sent successfully");
+    const queueItem = await Queue.findByPk(id);
+    queueItem.status = "sent";
   } catch (error) {
     console.error("Error sending email notification:", error);
   }
@@ -27,18 +28,16 @@ const sendEmailNotification = async (to, subject, text) => {
 
 const processEmailQueue = async () => {
   try {
-    console.log("hey")
+    console.log("hey");
 
     const queueItems = await Queue.findAll({
-        where: {
-            status: "pending"
-        }
-    })
-    console.log(queueItems)
+      where: {
+        status: "pending",
+      },
+    });
+    console.log(queueItems);
     for (const item of queueItems) {
-      await sendEmailNotification(item.to, item.subject, item.text);
-      item.status = "completed";
-      await item.save();
+      await sendEmailNotification(item.to, item.subject, item.text, item.id);
     }
   } catch (error) {
     console.error("Error processing email queue:", error);
