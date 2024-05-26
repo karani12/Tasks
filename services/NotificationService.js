@@ -43,7 +43,7 @@ const processEmailQueue = async () => {
         console.log("Sending email notification to:", item.to);
         item.status = "completed";
         item.save()
-        // await sendEmailNotification(item.to, item.subject, item.text, item.id);
+        await sendEmailNotification(item.to, item.subject, item.text, item.id);
       }
     }
 
