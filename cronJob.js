@@ -1,7 +1,7 @@
 const { processEmailQueue } = require('./services/NotificationService');
 const cron = require('node-cron');
 
-const startApplication = async () => {
+const startJob = async () => {
   try {
     cron.schedule('* * * * *', async () => {
       console.log('Running cron job to process email queue');
@@ -15,4 +15,4 @@ const startApplication = async () => {
   }
 };
 
-startApplication();
+module.exports = startJob;

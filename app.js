@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const authRoutes = require('./routes/AuthRoutes');
 const taskRoutes = require('./routes/TaskRoutes');
 const sequelize = require('./config/db');
+const startJob = require('./cronJob');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -13,6 +14,7 @@ app.options('*', cors());
 app.use(bodyParser.json());
 app.use('/api/auth', authRoutes);
 app.use('/api', taskRoutes);
+startJob();
 
 const PORT = process.env.PORT || 3000;
 
